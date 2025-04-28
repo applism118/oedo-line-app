@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { linearStations, circularStations } from "@/lib/stations";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface OedoMapProps {
   selectedFromStation: string | null;
@@ -13,6 +14,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
   onStationClick 
 }) => {
   const [selectedRoute, setSelectedRoute] = useState<string[]>([]);
+  const isMobile = useIsMobile();
 
   // Calculate the selected route when departure and destination are both selected
   useEffect(() => {
@@ -36,36 +38,75 @@ const OedoMap: React.FC<OedoMapProps> = ({
     }
   }, [selectedFromStation, selectedToStation]);
 
+  // SVG dimensions and viewBox
+  const svgWidth = 680;
+  const svgHeight = 550;
+  const viewBox = `0 0 ${svgWidth} ${svgHeight}`;
+  
+  // Calculate linear path
+  const linearStartX = linearStations[0].cx;
+  const linearStartY = linearStations[0].cy;
+  const linearEndX = linearStations[linearStations.length - 1].cx;
+  const linearEndY = linearStations[linearStations.length - 1].cy;
+  const linearPath = `M${linearStartX},${linearStartY} `;
+  
+  // Create path for linear section (smooth line through all points)
+  const linearPathPoints = linearStations.map(station => `${station.cx},${station.cy}`).join(" ");
+  
+  // Create rounded rectangle path for circular section
+  const getRoundedRectPath = () => {
+    // Calculate points for rounded rect
+    const startX = circularStations[0].cx;
+    const startY = circularStations[0].cy;
+    const width = 200;
+    const height = 190;
+    const radius = 80;
+    
+    return `
+      M${startX},${startY}
+      L${startX + width - radius},${startY}
+      Q${startX + width},${startY} ${startX + width},${startY + radius}
+      L${startX + width},${startY + height - radius}
+      Q${startX + width},${startY + height} ${startX + width - radius},${startY + height}
+      L${startX - width + radius},${startY + height}
+      Q${startX - width},${startY + height} ${startX - width},${startY + height - radius}
+      L${startX - width},${startY + radius}
+      Q${startX - width},${startY} ${startX - width + radius},${startY}
+      L${startX},${startY}
+    `;
+  };
+
   return (
     <div className="overflow-x-auto">
-      <div className="line-map min-w-[700px] h-[500px] relative">
-        <svg width="700" height="500" viewBox="0 0 700 500" className="mx-auto">
+      <div className={`line-map relative ${isMobile ? 'min-w-[680px]' : ''} max-w-full mx-auto`}>
+        <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
           {/* Linear Section */}
-          <path 
-            d="M140,80 L350,200" 
-            className="stroke-[#1e6738] stroke-4" 
+          <polyline 
+            points={linearPathPoints}
+            className="stroke-[#1e6738] stroke-4 fill-none" 
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <text 
-            x="245" 
-            y="120" 
-            className="text-xs" 
+            x="160" 
+            y="80" 
+            className="text-xs font-medium" 
             textAnchor="middle" 
             fill="#1f2937"
           >
             直線ゾーン
           </text>
           
-          {/* Circular Section */}
+          {/* Circular Section - Using rounded rectangle */}
           <path 
-            d="M350,200 Q500,100 600,220 Q650,350 550,450 Q450,500 300,480 Q200,450 180,350 Q150,250 350,200" 
+            d={getRoundedRectPath()}
             className="stroke-[#1e6738] stroke-4 fill-none" 
             strokeLinecap="round"
           />
           <text 
-            x="400" 
-            y="350" 
-            className="text-xs" 
+            x="480" 
+            y="400" 
+            className="text-xs font-medium" 
             textAnchor="middle" 
             fill="#1f2937"
           >
@@ -91,7 +132,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                 y={station.textY} 
                 className={`
                   text-xs 
-                  ${station.name === "都庁前" ? 'font-bold' : ''} 
+                  ${station.name === "都庁前" ? 'font-semibold' : ''} 
                   cursor-pointer
                 `} 
                 textAnchor={station.textAnchor}
