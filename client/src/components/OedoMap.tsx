@@ -60,8 +60,11 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgWidth = 680;
   const svgHeight = 550;
   const linearViewBox = "20 20 350 350";
-  const circularViewBox = "180 150 520 350";
+  const circularViewBox = "180 180 460 300"; // 縮めた高さ (300 instead of 350)
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
+
+  // Theme color for Oedo Line
+  const oedoLineColor = "#b6007a";
 
   // Toggle between linear and circular views
   const toggleView = () => {
@@ -76,6 +79,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
           variant={activeView === "linear" ? "default" : "outline"}
           onClick={() => setActiveView("linear")}
           className="px-4 py-2 rounded-full"
+          style={{ backgroundColor: activeView === "linear" ? oedoLineColor : 'white', color: activeView === "linear" ? 'white' : oedoLineColor, borderColor: oedoLineColor }}
         >
           <ChevronLeft className="mr-1 h-4 w-4" />
           直線ゾーン
@@ -84,6 +88,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
           variant={activeView === "circular" ? "default" : "outline"}
           onClick={() => setActiveView("circular")}
           className="px-4 py-2 rounded-full"
+          style={{ backgroundColor: activeView === "circular" ? oedoLineColor : 'white', color: activeView === "circular" ? 'white' : oedoLineColor, borderColor: oedoLineColor }}
         >
           環状線ゾーン
           <ChevronRight className="ml-1 h-4 w-4" />
@@ -100,7 +105,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
               y="50" 
               className="text-lg font-medium" 
               textAnchor="middle" 
-              fill="#1e6738"
+              fill={oedoLineColor}
             >
               {activeView === "linear" ? "直線ゾーン (光が丘 → 都庁前)" : "環状線ゾーン"}
             </text>
@@ -111,7 +116,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                 d={linearStations.map((station, i) => 
                   i === 0 ? `M ${station.cx} ${station.cy}` : `L ${station.cx} ${station.cy}`
                 ).join(' ')}
-                stroke="#1e6738"
+                stroke={oedoLineColor}
                 strokeWidth="4"
                 fill="none"
               />
@@ -121,7 +126,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {activeView === "circular" && (
               <path
                 d="M 220 450 L 640 450 L 640 210 L 220 210 L 220 450 Z"
-                stroke="#1e6738"
+                stroke={oedoLineColor}
                 strokeWidth="4"
                 fill="none"
               />
@@ -137,9 +142,10 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   className={`
                     ${station.name === selectedFromStation ? 'fill-blue-500' : 
                       station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
-                    ${station.name === "都庁前" ? 'stroke-[#1e6738] stroke-3' : 'stroke-[#1e6738] stroke-2'}
                     cursor-pointer
                   `}
+                  stroke={oedoLineColor}
+                  strokeWidth={station.name === "都庁前" ? 3 : 2}
                 />
                 <text 
                   x={station.textX} 
@@ -150,6 +156,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                     cursor-pointer
                   `} 
                   textAnchor={station.textAnchor}
+                  transform={`rotate(-15, ${station.cx}, ${station.cy})`}
                 >
                   {station.name}
                 </text>
@@ -166,15 +173,26 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   className={`
                     ${station.name === selectedFromStation ? 'fill-blue-500' : 
                       station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
-                    stroke-[#1e6738] stroke-2
                     cursor-pointer
                   `}
+                  stroke={oedoLineColor}
+                  strokeWidth={station.name === "都庁前" ? 3 : 2}
                 />
                 <text 
                   x={station.textX} 
                   y={station.textY} 
                   className="text-xs cursor-pointer" 
                   textAnchor={station.textAnchor}
+                  transform={
+                    index > 0 && index < 15 ? 
+                      // 下側の駅名（時計回りに左から右）
+                      `rotate(-15, ${station.cx}, ${station.cy})` : 
+                    index >= 15 && index < 29 ? 
+                      // 上側の駅名（時計回りに右から左）
+                      `rotate(15, ${station.cx}, ${station.cy})` : 
+                      // 角（都庁前）
+                      `rotate(0, ${station.cx}, ${station.cy})`
+                  }
                 >
                   {station.name}
                 </text>
