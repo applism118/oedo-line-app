@@ -60,7 +60,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgWidth = 680;
   const svgHeight = 550;
   const linearViewBox = "20 20 350 350";
-  const circularViewBox = "180 180 460 300"; // 縮めた高さ (300 instead of 350)
+  const circularViewBox = "150 150 500 350"; // より広い範囲で環状線全体を表示
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
@@ -156,7 +156,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                     cursor-pointer
                   `} 
                   textAnchor={station.textAnchor}
-                  transform={`rotate(-15, ${station.cx}, ${station.cy})`}
+                  transform={`rotate(-20, ${station.cx}, ${station.cy}) translate(0, 5)`}
                 >
                   {station.name}
                 </text>
@@ -186,10 +186,10 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   transform={
                     index > 0 && index < 15 ? 
                       // 下側の駅名（時計回りに左から右）
-                      `rotate(-15, ${station.cx}, ${station.cy})` : 
+                      `rotate(-20, ${station.cx}, ${station.cy}) translate(0, 15)` : 
                     index >= 15 && index < 29 ? 
                       // 上側の駅名（時計回りに右から左）
-                      `rotate(15, ${station.cx}, ${station.cy})` : 
+                      `rotate(20, ${station.cx}, ${station.cy}) translate(0, -15)` : 
                       // 角（都庁前）
                       `rotate(0, ${station.cx}, ${station.cy})`
                   }
