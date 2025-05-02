@@ -21,7 +21,7 @@ interface RouteSelectorProps {
   startTime: string;
   restMinutes: number;
   onFromStationChange: (station: string) => void;
-  onToStationChange: (station: string) => void;
+  onToStationChange: (station: string | null) => void;
   onDirectionChange: (direction: Direction) => void;
   onStartTimeChange: (time: string) => void;
   onRestMinutesChange: (minutes: number) => void;
@@ -44,10 +44,27 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
   const restTimeOptions = getRestTimeOptions();
   
   const handleStationClick = (stationName: string) => {
+    // どちらも選択されていない場合は出発駅として設定
     if (!fromStation) {
       onFromStationChange(stationName);
-    } else if (!toStation && stationName !== fromStation) {
-      onToStationChange(stationName);
+      return;
+    }
+    
+    // 出発駅が選択済みで、到着駅が未選択の場合
+    if (fromStation && !toStation) {
+      // 同じ駅は選択できないようにする
+      if (stationName !== fromStation) {
+        onToStationChange(stationName);
+      }
+      return;
+    }
+    
+    // 両方選択済みの場合は、クリックされた駅を出発駅として新たに設定し、到着駅をクリア
+    if (fromStation && toStation) {
+      // TypeScriptの型チェックを通すために空文字列を使用（nullと同等の扱い）
+      onToStationChange("");
+      onFromStationChange(stationName);
+      return;
     }
   };
 
@@ -60,13 +77,13 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
         <TabsList className="border-b border-gray-200 mb-4 w-full justify-start">
           <TabsTrigger 
             value="map" 
-            className="px-4 py-2 data-[state=active]:border-b-2 data-[state=active]:border-[#1e6738] data-[state=active]:text-[#1e6738] data-[state=active]:font-medium"
+            className="px-4 py-2 data-[state=active]:border-b-2 data-[state=active]:border-[#b6007a] data-[state=active]:text-[#b6007a] data-[state=active]:font-medium"
           >
             地図で指定
           </TabsTrigger>
           <TabsTrigger 
             value="text" 
-            className="px-4 py-2 data-[state=active]:border-b-2 data-[state=active]:border-[#1e6738] data-[state=active]:text-[#1e6738] data-[state=active]:font-medium"
+            className="px-4 py-2 data-[state=active]:border-b-2 data-[state=active]:border-[#b6007a] data-[state=active]:text-[#b6007a] data-[state=active]:font-medium"
           >
             キーワードで指定
           </TabsTrigger>
@@ -144,12 +161,12 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
             className="flex space-x-4"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="clockwise" id="clockwise" />
-              <Label htmlFor="clockwise">時計回り</Label>
+              <RadioGroupItem value="counterclockwise" id="counterclockwise" />
+              <Label htmlFor="counterclockwise">時計回り</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="counterclockwise" id="counterclockwise" />
-              <Label htmlFor="counterclockwise">反時計回り</Label>
+              <RadioGroupItem value="clockwise" id="clockwise" />
+              <Label htmlFor="clockwise">反時計回り</Label>
             </div>
           </RadioGroup>
         </div>

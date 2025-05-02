@@ -164,31 +164,38 @@ const OedoMap: React.FC<OedoMapProps> = ({
             ))}
             
             {/* Circular Stations - Only show when in circular view */}
-            {activeView === "circular" && circularStations.map((station, index) => (
-              <g key={`circular-${station.name}-${index}`} onClick={() => onStationClick(station.name)}>
-                <circle 
-                  cx={station.cx} 
-                  cy={station.cy} 
-                  r={station.name === "都庁前" ? 8 : 6} 
-                  className={`
-                    ${station.name === selectedFromStation ? 'fill-blue-500' : 
-                      station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
-                    cursor-pointer
-                  `}
-                  stroke={oedoLineColor}
-                  strokeWidth={station.name === "都庁前" ? 3 : 2}
-                />
-                <text 
-                  x={station.textX} 
-                  y={station.textY} 
-                  className="text-sm md:text-base font-medium cursor-pointer" 
-                  textAnchor={station.textAnchor}
-                  // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
-                >
-                  {station.name}
-                </text>
-              </g>
-            ))}
+            {activeView === "circular" && circularStations.map((station, index) => {
+              // 都庁前駅が重複して表示されるため、重複する場合はスキップする
+              if (index > 0 && station.name === "都庁前" && activeView === "circular") {
+                return null;
+              }
+              
+              return (
+                <g key={`circular-${station.name}-${index}`} onClick={() => onStationClick(station.name)}>
+                  <circle 
+                    cx={station.cx} 
+                    cy={station.cy} 
+                    r={station.name === "都庁前" ? 8 : 6} 
+                    className={`
+                      ${station.name === selectedFromStation ? 'fill-blue-500' : 
+                        station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
+                      cursor-pointer
+                    `}
+                    stroke={oedoLineColor}
+                    strokeWidth={station.name === "都庁前" ? 3 : 2}
+                  />
+                  <text 
+                    x={station.textX} 
+                    y={station.textY} 
+                    className="text-sm md:text-base font-medium cursor-pointer" 
+                    textAnchor={station.textAnchor}
+                    // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
+                  >
+                    {station.name}
+                  </text>
+                </g>
+              );
+            })}
           </svg>
         </div>
       </div>
