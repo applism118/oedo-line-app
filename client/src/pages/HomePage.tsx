@@ -183,13 +183,13 @@ const HomePage = () => {
   return (
     <div className="bg-gray-100 min-h-screen font-sans text-gray-800">
       {/* App Header */}
-      <header className="bg-[#1e6738] text-white p-4 shadow-md">
+      <header className="bg-[#b6007a] text-white p-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">都営大江戸線ウォーキングプランナー</h1>
           <Button 
             variant="ghost" 
             size="icon"
-            className="p-2 rounded hover:bg-[#2a8c4a] transition-colors"
+            className="p-2 rounded hover:bg-[#d4218e] transition-colors"
             onClick={() => setIsSavedPlansDialogOpen(true)}
           >
             <Bookmark className="h-6 w-6" />

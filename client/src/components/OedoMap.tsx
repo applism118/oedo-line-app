@@ -151,8 +151,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   x={station.textX} 
                   y={station.textY} 
                   className={`
-                    text-xs 
-                    ${station.name === "都庁前" ? 'font-semibold' : ''} 
+                    text-sm md:text-base
+                    ${station.name === "都庁前" ? 'font-semibold' : 'font-medium'} 
                     cursor-pointer
                   `} 
                   textAnchor={station.textAnchor}
@@ -181,7 +181,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                 <text 
                   x={station.textX} 
                   y={station.textY} 
-                  className="text-xs cursor-pointer" 
+                  className="text-sm md:text-base font-medium cursor-pointer" 
                   textAnchor={station.textAnchor}
                   // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
                 >
