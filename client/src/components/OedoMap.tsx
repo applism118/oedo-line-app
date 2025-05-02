@@ -125,7 +125,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {/* Rectangular Path for Circular zone - Only show in circular view */}
             {activeView === "circular" && (
               <path
-                d="M 220 450 L 640 450 L 640 210 L 220 210 L 220 450 Z"
+                d="M 200 450 L 650 450 L 650 210 L 200 210 L 200 450 Z"
                 stroke={oedoLineColor}
                 strokeWidth="4"
                 fill="none"
@@ -156,7 +156,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                     cursor-pointer
                   `} 
                   textAnchor={station.textAnchor}
-                  transform={`rotate(-20, ${station.cx}, ${station.cy}) translate(0, 5)`}
+                  // 傾きと位置移動は不要 - textAnchorとtextXYで位置調整
                 >
                   {station.name}
                 </text>
@@ -183,16 +183,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   y={station.textY} 
                   className="text-xs cursor-pointer" 
                   textAnchor={station.textAnchor}
-                  transform={
-                    index > 0 && index < 15 ? 
-                      // 下側の駅名（時計回りに左から右）
-                      `rotate(-20, ${station.cx}, ${station.cy}) translate(0, 15)` : 
-                    index >= 15 && index < 29 ? 
-                      // 上側の駅名（時計回りに右から左）
-                      `rotate(20, ${station.cx}, ${station.cy}) translate(0, -15)` : 
-                      // 角（都庁前）
-                      `rotate(0, ${station.cx}, ${station.cy})`
-                  }
+                  // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
                 >
                   {station.name}
                 </text>
