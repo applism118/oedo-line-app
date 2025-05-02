@@ -80,13 +80,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
     <div className="overflow-x-auto">
       <div className={`line-map relative ${isMobile ? 'min-w-[680px]' : ''} max-w-full mx-auto`}>
         <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
-          {/* Linear Section */}
-          <polyline 
-            points={linearPathPoints}
-            className="stroke-[#1e6738] stroke-4 fill-none" 
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+          {/* Zone labels */}
           <text 
             x="160" 
             y="80" 
@@ -97,12 +91,6 @@ const OedoMap: React.FC<OedoMapProps> = ({
             直線ゾーン
           </text>
           
-          {/* Circular Section - Using rounded rectangle */}
-          <path 
-            d={getRoundedRectPath()}
-            className="stroke-[#1e6738] stroke-4 fill-none" 
-            strokeLinecap="round"
-          />
           <text 
             x="480" 
             y="400" 
