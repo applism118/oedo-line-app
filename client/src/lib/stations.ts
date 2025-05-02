@@ -33,43 +33,44 @@ export const linearStations: OedoStation[] = [
   { name: "都庁前", zone: "linear", nextDistance: 0.0, cx: 320, cy: 330, textAnchor: "middle", textX: 320, textY: 345 }
 ];
 
-// Circular zone stations - rectangular layout with Tocho-mae at bottom left corner
+// Circular zone stations - only on top and bottom edges as requested
 export const circularStations: OedoStation[] = [
-  // Bottom left corner
-  { name: "都庁前", zone: "circular", nextDistance: 0.7, cx: 220, cy: 450, textAnchor: "middle", textX: 220, textY: 435 },
-  // Bottom edge (left to right)
-  { name: "新宿西口", zone: "circular", nextDistance: 0.8, cx: 260, cy: 450, textAnchor: "middle", textX: 260, textY: 465 },
-  { name: "東新宿", zone: "circular", nextDistance: 0.9, cx: 300, cy: 450, textAnchor: "middle", textX: 300, textY: 465 },
-  { name: "若松河田", zone: "circular", nextDistance: 0.9, cx: 340, cy: 450, textAnchor: "middle", textX: 340, textY: 465 },
-  { name: "牛込柳町", zone: "circular", nextDistance: 0.8, cx: 380, cy: 450, textAnchor: "middle", textX: 380, textY: 465 },
-  { name: "牛込神楽坂", zone: "circular", nextDistance: 1.0, cx: 420, cy: 450, textAnchor: "middle", textX: 420, textY: 465 },
-  { name: "飯田橋", zone: "circular", nextDistance: 1.2, cx: 460, cy: 450, textAnchor: "middle", textX: 460, textY: 465 },
-  // Right edge (bottom to top)
-  { name: "春日", zone: "circular", nextDistance: 0.9, cx: 500, cy: 450, textAnchor: "middle", textX: 500, textY: 465 },
-  { name: "本郷三丁目", zone: "circular", nextDistance: 1.1, cx: 500, cy: 410, textAnchor: "start", textX: 515, textY: 410 },
-  { name: "上野御徒町", zone: "circular", nextDistance: 1.0, cx: 500, cy: 370, textAnchor: "start", textX: 515, textY: 370 },
-  { name: "新御徒町", zone: "circular", nextDistance: 0.9, cx: 500, cy: 330, textAnchor: "start", textX: 515, textY: 330 },
-  { name: "蔵前", zone: "circular", nextDistance: 0.8, cx: 500, cy: 290, textAnchor: "start", textX: 515, textY: 290 },
-  { name: "両国", zone: "circular", nextDistance: 0.8, cx: 500, cy: 250, textAnchor: "start", textX: 515, textY: 250 },
-  // Top edge (right to left)
-  { name: "森下", zone: "circular", nextDistance: 0.9, cx: 500, cy: 210, textAnchor: "start", textX: 515, textY: 210 },
-  { name: "清澄白河", zone: "circular", nextDistance: 1.0, cx: 460, cy: 210, textAnchor: "middle", textX: 460, textY: 195 },
-  { name: "門前仲町", zone: "circular", nextDistance: 1.1, cx: 420, cy: 210, textAnchor: "middle", textX: 420, textY: 195 },
-  { name: "月島", zone: "circular", nextDistance: 0.8, cx: 380, cy: 210, textAnchor: "middle", textX: 380, textY: 195 },
-  { name: "勝どき", zone: "circular", nextDistance: 0.9, cx: 340, cy: 210, textAnchor: "middle", textX: 340, textY: 195 },
-  { name: "築地市場", zone: "circular", nextDistance: 0.9, cx: 300, cy: 210, textAnchor: "middle", textX: 300, textY: 195 },
-  { name: "汐留", zone: "circular", nextDistance: 0.8, cx: 260, cy: 210, textAnchor: "middle", textX: 260, textY: 195 },
-  { name: "大門", zone: "circular", nextDistance: 0.9, cx: 220, cy: 210, textAnchor: "middle", textX: 220, textY: 195 },
-  // Left edge (top to bottom)
-  { name: "赤羽橋", zone: "circular", nextDistance: 0.8, cx: 220, cy: 250, textAnchor: "end", textX: 205, textY: 250 },
-  { name: "麻布十番", zone: "circular", nextDistance: 1.0, cx: 220, cy: 290, textAnchor: "end", textX: 205, textY: 290 },
-  { name: "六本木", zone: "circular", nextDistance: 0.8, cx: 220, cy: 330, textAnchor: "end", textX: 205, textY: 330 },
-  { name: "青山一丁目", zone: "circular", nextDistance: 0.9, cx: 220, cy: 370, textAnchor: "end", textX: 205, textY: 370 },
-  { name: "国立競技場", zone: "circular", nextDistance: 1.1, cx: 220, cy: 390, textAnchor: "end", textX: 205, textY: 390 },
-  { name: "代々木", zone: "circular", nextDistance: 0.8, cx: 220, cy: 410, textAnchor: "end", textX: 205, textY: 410 },
-  { name: "新宿", zone: "circular", nextDistance: 0.9, cx: 220, cy: 430, textAnchor: "end", textX: 205, textY: 430 },
-  // Back to starting point
-  { name: "都庁前", zone: "circular", nextDistance: 0.0, cx: 220, cy: 450, textAnchor: "middle", textX: 220, textY: 435 }
+  // Bottom left corner (starting point)
+  { name: "都庁前", zone: "circular", nextDistance: 0.7, cx: 220, cy: 450, textAnchor: "middle", textX: 220, textY: 470 },
+  
+  // Bottom edge (left to right) - from Tocho-mae to Kiyosumi-shirakawa
+  { name: "新宿", zone: "circular", nextDistance: 0.9, cx: 248, cy: 450, textAnchor: "middle", textX: 248, textY: 470 },
+  { name: "代々木", zone: "circular", nextDistance: 0.8, cx: 276, cy: 450, textAnchor: "middle", textX: 276, textY: 470 },
+  { name: "国立競技場", zone: "circular", nextDistance: 1.1, cx: 304, cy: 450, textAnchor: "middle", textX: 304, textY: 470 },
+  { name: "青山一丁目", zone: "circular", nextDistance: 0.9, cx: 332, cy: 450, textAnchor: "middle", textX: 332, textY: 470 },
+  { name: "六本木", zone: "circular", nextDistance: 0.8, cx: 360, cy: 450, textAnchor: "middle", textX: 360, textY: 470 },
+  { name: "麻布十番", zone: "circular", nextDistance: 1.0, cx: 388, cy: 450, textAnchor: "middle", textX: 388, textY: 470 },
+  { name: "赤羽橋", zone: "circular", nextDistance: 0.8, cx: 416, cy: 450, textAnchor: "middle", textX: 416, textY: 470 },
+  { name: "大門", zone: "circular", nextDistance: 0.9, cx: 444, cy: 450, textAnchor: "middle", textX: 444, textY: 470 },
+  { name: "汐留", zone: "circular", nextDistance: 0.8, cx: 472, cy: 450, textAnchor: "middle", textX: 472, textY: 470 },
+  { name: "築地市場", zone: "circular", nextDistance: 0.9, cx: 500, cy: 450, textAnchor: "middle", textX: 500, textY: 470 },
+  { name: "勝どき", zone: "circular", nextDistance: 0.9, cx: 528, cy: 450, textAnchor: "middle", textX: 528, textY: 470 },
+  { name: "月島", zone: "circular", nextDistance: 0.8, cx: 556, cy: 450, textAnchor: "middle", textX: 556, textY: 470 },
+  { name: "門前仲町", zone: "circular", nextDistance: 1.1, cx: 584, cy: 450, textAnchor: "middle", textX: 584, textY: 470 },
+  { name: "清澄白河", zone: "circular", nextDistance: 1.0, cx: 612, cy: 450, textAnchor: "middle", textX: 612, textY: 470 },
+  
+  // Right corner
+  { name: "森下", zone: "circular", nextDistance: 0.9, cx: 640, cy: 210, textAnchor: "middle", textX: 640, textY: 190 },
+  
+  // Top edge (right to left) - from Morishita to Shinjuku-nishiguchi
+  { name: "両国", zone: "circular", nextDistance: 0.8, cx: 612, cy: 210, textAnchor: "middle", textX: 612, textY: 190 },
+  { name: "蔵前", zone: "circular", nextDistance: 0.8, cx: 584, cy: 210, textAnchor: "middle", textX: 584, textY: 190 },
+  { name: "新御徒町", zone: "circular", nextDistance: 0.9, cx: 556, cy: 210, textAnchor: "middle", textX: 556, textY: 190 },
+  { name: "上野御徒町", zone: "circular", nextDistance: 1.0, cx: 528, cy: 210, textAnchor: "middle", textX: 528, textY: 190 },
+  { name: "本郷三丁目", zone: "circular", nextDistance: 1.1, cx: 500, cy: 210, textAnchor: "middle", textX: 500, textY: 190 },
+  { name: "春日", zone: "circular", nextDistance: 0.9, cx: 472, cy: 210, textAnchor: "middle", textX: 472, textY: 190 },
+  { name: "飯田橋", zone: "circular", nextDistance: 1.2, cx: 444, cy: 210, textAnchor: "middle", textX: 444, textY: 190 },
+  { name: "牛込神楽坂", zone: "circular", nextDistance: 1.0, cx: 416, cy: 210, textAnchor: "middle", textX: 416, textY: 190 },
+  { name: "牛込柳町", zone: "circular", nextDistance: 0.8, cx: 388, cy: 210, textAnchor: "middle", textX: 388, textY: 190 },
+  { name: "若松河田", zone: "circular", nextDistance: 0.9, cx: 360, cy: 210, textAnchor: "middle", textX: 360, textY: 190 },
+  { name: "東新宿", zone: "circular", nextDistance: 0.9, cx: 332, cy: 210, textAnchor: "middle", textX: 332, textY: 190 },
+  { name: "新宿西口", zone: "circular", nextDistance: 0.8, cx: 304, cy: 210, textAnchor: "middle", textX: 304, textY: 190 },
+  { name: "都庁前", zone: "circular", nextDistance: 0.0, cx: 220, cy: 210, textAnchor: "middle", textX: 220, textY: 190 }
 ];
 
 // All stations merged

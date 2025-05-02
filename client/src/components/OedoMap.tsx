@@ -60,7 +60,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgWidth = 680;
   const svgHeight = 550;
   const linearViewBox = "20 20 350 350";
-  const circularViewBox = "180 180 360 300";
+  const circularViewBox = "180 150 520 350";
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Toggle between linear and circular views
@@ -120,7 +120,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {/* Rectangular Path for Circular zone - Only show in circular view */}
             {activeView === "circular" && (
               <path
-                d="M 220 450 L 500 450 L 500 210 L 220 210 L 220 450"
+                d="M 220 450 L 640 450 L 640 210 L 220 210 L 220 450 Z"
                 stroke="#1e6738"
                 strokeWidth="4"
                 fill="none"
