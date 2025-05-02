@@ -60,7 +60,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgWidth = 680;
   const svgHeight = 550;
   const linearViewBox = "20 20 350 350";
-  const circularViewBox = "200 200 450 350";
+  const circularViewBox = "180 180 360 300";
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Toggle between linear and circular views
@@ -104,6 +104,28 @@ const OedoMap: React.FC<OedoMapProps> = ({
             >
               {activeView === "linear" ? "直線ゾーン (光が丘 → 都庁前)" : "環状線ゾーン"}
             </text>
+            
+            {/* Linear Path - Only show in linear view */}
+            {activeView === "linear" && (
+              <path
+                d={linearStations.map((station, i) => 
+                  i === 0 ? `M ${station.cx} ${station.cy}` : `L ${station.cx} ${station.cy}`
+                ).join(' ')}
+                stroke="#1e6738"
+                strokeWidth="4"
+                fill="none"
+              />
+            )}
+            
+            {/* Rectangular Path for Circular zone - Only show in circular view */}
+            {activeView === "circular" && (
+              <path
+                d="M 220 450 L 500 450 L 500 210 L 220 210 L 220 450"
+                stroke="#1e6738"
+                strokeWidth="4"
+                fill="none"
+              />
+            )}
             
             {/* Linear Stations - Only show when in linear view */}
             {activeView === "linear" && linearStations.map((station, index) => (
