@@ -57,10 +57,10 @@ const OedoMap: React.FC<OedoMapProps> = ({
   }, [selectedFromStation, selectedToStation]);
 
   // SVG dimensions and viewBox
-  const svgWidth = 680;
-  const svgHeight = 550;
+  const svgWidth = 1150;
+  const svgHeight = 650;
   const linearViewBox = "20 20 350 350";
-  const circularViewBox = "150 150 500 350"; // より広い範囲で環状線全体を表示
+  const circularViewBox = "0 0 1150 650"; // 新しい環状線に合わせたviewBox
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
@@ -97,12 +97,12 @@ const OedoMap: React.FC<OedoMapProps> = ({
 
       {/* Map View Container */}
       <div className="overflow-x-auto">
-        <div className={`line-map relative ${isMobile ? 'min-w-[680px]' : ''} max-w-full mx-auto`}>
+        <div className={`line-map relative ${isMobile ? 'min-w-[1150px]' : ''} max-w-full mx-auto`}>
           <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
             {/* Zone label */}
             <text 
-              x="240" 
-              y="50" 
+              x={activeView === "linear" ? "240" : "570"} 
+              y={activeView === "linear" ? "50" : "50"} 
               className="text-lg font-medium" 
               textAnchor="middle" 
               fill={oedoLineColor}
@@ -125,7 +125,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {/* Rectangular Path for Circular zone - Only show in circular view */}
             {activeView === "circular" && (
               <path
-                d="M 200 450 L 650 450 L 650 210 L 200 210 L 200 450 Z"
+                d="M 80 550 L 1060 550 L 1060 100 L 80 100 L 80 550 Z"
                 stroke={oedoLineColor}
                 strokeWidth="4"
                 fill="none"
