@@ -205,8 +205,15 @@ const HomePage = () => {
           direction={direction}
           startTime={startTime}
           restMinutes={restMinutes}
-          onFromStationChange={setFromStation}
-          onToStationChange={setToStation}
+          onFromStationChange={(station) => {
+            console.log("Setting from station:", station);
+            setFromStation(station);
+          }}
+          onToStationChange={(station) => {
+            console.log("Setting to station:", station);
+            // nullまたは空文字列の場合はnullに統一する
+            setToStation(station === "" ? null : station);
+          }}
           onDirectionChange={setDirection}
           onStartTimeChange={setStartTime}
           onRestMinutesChange={setRestMinutes}

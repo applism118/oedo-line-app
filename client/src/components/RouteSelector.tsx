@@ -44,6 +44,8 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
   const restTimeOptions = getRestTimeOptions();
   
   const handleStationClick = (stationName: string) => {
+    console.log("Station clicked:", stationName, "fromStation:", fromStation, "toStation:", toStation);
+    
     // どちらも選択されていない場合は出発駅として設定
     if (!fromStation) {
       onFromStationChange(stationName);
@@ -61,8 +63,20 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
     
     // 両方選択済みの場合は、クリックされた駅を出発駅として新たに設定し、到着駅をクリア
     if (fromStation && toStation) {
-      // TypeScriptの型チェックを通すために空文字列を使用（nullと同等の扱い）
-      onToStationChange("");
+      // クリックされた駅が出発駅と同じ場合は、出発駅をクリア
+      if (stationName === fromStation) {
+        onFromStationChange("");
+        return;
+      }
+      
+      // クリックされた駅が到着駅と同じ場合は、到着駅をクリア
+      if (stationName === toStation) {
+        onToStationChange(null);
+        return;
+      }
+      
+      // それ以外の場合は新しい出発駅として設定し、到着駅をクリア
+      onToStationChange(null);
       onFromStationChange(stationName);
       return;
     }
@@ -161,12 +175,12 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
             className="flex space-x-4"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="counterclockwise" id="counterclockwise" />
-              <Label htmlFor="counterclockwise">時計回り</Label>
+              <RadioGroupItem value="clockwise" id="clockwise" />
+              <Label htmlFor="clockwise">時計回り</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="clockwise" id="clockwise" />
-              <Label htmlFor="clockwise">反時計回り</Label>
+              <RadioGroupItem value="counterclockwise" id="counterclockwise" />
+              <Label htmlFor="counterclockwise">反時計回り</Label>
             </div>
           </RadioGroup>
         </div>
