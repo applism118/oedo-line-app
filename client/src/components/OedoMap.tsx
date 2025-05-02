@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { linearStations, circularStations } from "@/lib/stations";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface OedoMapProps {
   selectedFromStation: string | null;
@@ -8,12 +10,15 @@ interface OedoMapProps {
   onStationClick: (stationName: string) => void;
 }
 
+type MapView = "linear" | "circular";
+
 const OedoMap: React.FC<OedoMapProps> = ({ 
   selectedFromStation, 
   selectedToStation, 
   onStationClick 
 }) => {
   const [selectedRoute, setSelectedRoute] = useState<string[]>([]);
+  const [activeView, setActiveView] = useState<MapView>("linear");
   const isMobile = useIsMobile();
 
   // Calculate the selected route when departure and destination are both selected
@@ -33,6 +38,19 @@ const OedoMap: React.FC<OedoMapProps> = ({
       if (selectedToStation) stations.push(selectedToStation);
       
       setSelectedRoute(stations);
+
+      // Auto switch to the appropriate view based on selected stations
+      if (fromLinearIdx !== -1 && toLinearIdx !== -1) {
+        setActiveView("linear");
+      } else if (fromCircularIdx !== -1 && toCircularIdx !== -1) {
+        setActiveView("circular");
+      } else if (fromLinearIdx !== -1 && toCircularIdx !== -1) {
+        // If from linear to circular, show linear first
+        setActiveView("linear");
+      } else if (fromCircularIdx !== -1 && toLinearIdx !== -1) {
+        // If from circular to linear, show circular first
+        setActiveView("circular");
+      }
     } else {
       setSelectedRoute([]);
     }
@@ -41,87 +59,123 @@ const OedoMap: React.FC<OedoMapProps> = ({
   // SVG dimensions and viewBox
   const svgWidth = 680;
   const svgHeight = 550;
-  const viewBox = `0 0 ${svgWidth} ${svgHeight}`;
+  const linearViewBox = "20 20 350 350";
+  const circularViewBox = "200 200 450 350";
+  const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
+
+  // Toggle between linear and circular views
+  const toggleView = () => {
+    setActiveView(prev => prev === "linear" ? "circular" : "linear");
+  };
 
   return (
-    <div className="overflow-x-auto">
-      <div className={`line-map relative ${isMobile ? 'min-w-[680px]' : ''} max-w-full mx-auto`}>
-        <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
-          {/* Zone labels */}
-          <text 
-            x="160" 
-            y="80" 
-            className="text-xs font-medium" 
-            textAnchor="middle" 
-            fill="#1f2937"
-          >
-            直線ゾーン
-          </text>
-          
-          <text 
-            x="480" 
-            y="400" 
-            className="text-xs font-medium" 
-            textAnchor="middle" 
-            fill="#1f2937"
-          >
-            環状線ゾーン
-          </text>
-          
-          {/* Linear Stations */}
-          {linearStations.map((station) => (
-            <g key={`linear-${station.name}`} onClick={() => onStationClick(station.name)}>
-              <circle 
-                cx={station.cx} 
-                cy={station.cy} 
-                r={station.name === "都庁前" ? 8 : 6} 
-                className={`
-                  ${station.name === selectedFromStation ? 'fill-blue-500' : 
-                    station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
-                  ${station.name === "都庁前" ? 'stroke-[#1e6738] stroke-3' : 'stroke-[#1e6738] stroke-2'}
-                  cursor-pointer
-                `}
-              />
-              <text 
-                x={station.textX} 
-                y={station.textY} 
-                className={`
-                  text-xs 
-                  ${station.name === "都庁前" ? 'font-semibold' : ''} 
-                  cursor-pointer
-                `} 
-                textAnchor={station.textAnchor}
-              >
-                {station.name}
-              </text>
-            </g>
-          ))}
-          
-          {/* Circular Stations (excluding the duplicate Tocho-mae at the end) */}
-          {circularStations.slice(1, -1).map((station) => (
-            <g key={`circular-${station.name}`} onClick={() => onStationClick(station.name)}>
-              <circle 
-                cx={station.cx} 
-                cy={station.cy} 
-                r={6} 
-                className={`
-                  ${station.name === selectedFromStation ? 'fill-blue-500' : 
-                    station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
-                  stroke-[#1e6738] stroke-2
-                  cursor-pointer
-                `}
-              />
-              <text 
-                x={station.textX} 
-                y={station.textY} 
-                className="text-xs cursor-pointer" 
-                textAnchor={station.textAnchor}
-              >
-                {station.name}
-              </text>
-            </g>
-          ))}
-        </svg>
+    <div className="space-y-4">
+      {/* View Toggle Buttons */}
+      <div className="flex justify-center space-x-2 mb-2">
+        <Button 
+          variant={activeView === "linear" ? "default" : "outline"}
+          onClick={() => setActiveView("linear")}
+          className="px-4 py-2 rounded-full"
+        >
+          <ChevronLeft className="mr-1 h-4 w-4" />
+          直線ゾーン
+        </Button>
+        <Button 
+          variant={activeView === "circular" ? "default" : "outline"}
+          onClick={() => setActiveView("circular")}
+          className="px-4 py-2 rounded-full"
+        >
+          環状線ゾーン
+          <ChevronRight className="ml-1 h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* Map View Container */}
+      <div className="overflow-x-auto">
+        <div className={`line-map relative ${isMobile ? 'min-w-[680px]' : ''} max-w-full mx-auto`}>
+          <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
+            {/* Zone label */}
+            <text 
+              x="240" 
+              y="50" 
+              className="text-lg font-medium" 
+              textAnchor="middle" 
+              fill="#1e6738"
+            >
+              {activeView === "linear" ? "直線ゾーン (光が丘 → 都庁前)" : "環状線ゾーン"}
+            </text>
+            
+            {/* Linear Stations - Only show when in linear view */}
+            {activeView === "linear" && linearStations.map((station, index) => (
+              <g key={`linear-${station.name}-${index}`} onClick={() => onStationClick(station.name)}>
+                <circle 
+                  cx={station.cx} 
+                  cy={station.cy} 
+                  r={station.name === "都庁前" ? 8 : 6} 
+                  className={`
+                    ${station.name === selectedFromStation ? 'fill-blue-500' : 
+                      station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
+                    ${station.name === "都庁前" ? 'stroke-[#1e6738] stroke-3' : 'stroke-[#1e6738] stroke-2'}
+                    cursor-pointer
+                  `}
+                />
+                <text 
+                  x={station.textX} 
+                  y={station.textY} 
+                  className={`
+                    text-xs 
+                    ${station.name === "都庁前" ? 'font-semibold' : ''} 
+                    cursor-pointer
+                  `} 
+                  textAnchor={station.textAnchor}
+                >
+                  {station.name}
+                </text>
+              </g>
+            ))}
+            
+            {/* Circular Stations - Only show when in circular view */}
+            {activeView === "circular" && circularStations.map((station, index) => (
+              <g key={`circular-${station.name}-${index}`} onClick={() => onStationClick(station.name)}>
+                <circle 
+                  cx={station.cx} 
+                  cy={station.cy} 
+                  r={station.name === "都庁前" ? 8 : 6} 
+                  className={`
+                    ${station.name === selectedFromStation ? 'fill-blue-500' : 
+                      station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
+                    stroke-[#1e6738] stroke-2
+                    cursor-pointer
+                  `}
+                />
+                <text 
+                  x={station.textX} 
+                  y={station.textY} 
+                  className="text-xs cursor-pointer" 
+                  textAnchor={station.textAnchor}
+                >
+                  {station.name}
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+      </div>
+
+      {/* Instructions */}
+      <div className="bg-gray-50 p-2 rounded-lg text-sm text-center">
+        <p>
+          <span className="inline-flex items-center">
+            <span className="bg-blue-500 h-3 w-3 inline-block rounded-full mr-1"></span>
+            出発駅
+          </span>
+          <span className="mx-2">|</span>
+          <span className="inline-flex items-center">
+            <span className="bg-red-500 h-3 w-3 inline-block rounded-full mr-1"></span>
+            到着駅
+          </span>
+        </p>
+        <p className="text-xs text-gray-500 mt-1">タブをクリックして路線図を切り替えられます</p>
       </div>
     </div>
   );
