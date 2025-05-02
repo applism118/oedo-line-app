@@ -103,7 +103,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             <text 
               x={activeView === "linear" ? "240" : "570"} 
               y={activeView === "linear" ? "50" : "50"} 
-              className="text-lg font-medium" 
+              className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
             >
