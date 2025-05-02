@@ -42,39 +42,6 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgWidth = 680;
   const svgHeight = 550;
   const viewBox = `0 0 ${svgWidth} ${svgHeight}`;
-  
-  // Calculate linear path
-  const linearStartX = linearStations[0].cx;
-  const linearStartY = linearStations[0].cy;
-  const linearEndX = linearStations[linearStations.length - 1].cx;
-  const linearEndY = linearStations[linearStations.length - 1].cy;
-  const linearPath = `M${linearStartX},${linearStartY} `;
-  
-  // Create path for linear section (smooth line through all points)
-  const linearPathPoints = linearStations.map(station => `${station.cx},${station.cy}`).join(" ");
-  
-  // Create rounded rectangle path for circular section
-  const getRoundedRectPath = () => {
-    // Calculate points for rounded rect
-    const startX = circularStations[0].cx;
-    const startY = circularStations[0].cy;
-    const width = 200;
-    const height = 190;
-    const radius = 80;
-    
-    return `
-      M${startX},${startY}
-      L${startX + width - radius},${startY}
-      Q${startX + width},${startY} ${startX + width},${startY + radius}
-      L${startX + width},${startY + height - radius}
-      Q${startX + width},${startY + height} ${startX + width - radius},${startY + height}
-      L${startX - width + radius},${startY + height}
-      Q${startX - width},${startY + height} ${startX - width},${startY + height - radius}
-      L${startX - width},${startY + radius}
-      Q${startX - width},${startY} ${startX - width + radius},${startY}
-      L${startX},${startY}
-    `;
-  };
 
   return (
     <div className="overflow-x-auto">
