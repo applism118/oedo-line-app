@@ -15,9 +15,9 @@ const StationTimeline: React.FC<StationTimelineProps> = ({ stations }) => {
     const station = findStation(stationName);
     if (!station) return 0.7; // デフォルト
     
-    // 距離に基づいて濃淡を調整 (0.3-1.0の範囲)
+    // 距離に基づいて濃淡を調整 (0.2-1.0の範囲) - より明確な差をつける
     const distance = station.nextDistance || 1.0;
-    return Math.min(0.3 + (distance - 0.7) * 0.4, 1.0);
+    return Math.min(0.2 + (distance - 0.7) * 0.6, 1.0);
   };
 
   // Get station marker type
@@ -46,7 +46,7 @@ const StationTimeline: React.FC<StationTimelineProps> = ({ stations }) => {
                 </div>
                 {!isLast && (
                   <div 
-                    className="absolute top-6 bottom-0 left-3 w-1.5" 
+                    className="absolute top-6 bottom-0 left-3 w-2" 
                     style={{ 
                       backgroundColor: oedoLineColor, 
                       opacity: lineOpacity 
