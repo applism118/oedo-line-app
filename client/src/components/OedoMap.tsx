@@ -198,7 +198,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
   const svgHeight = 500;
   // 添付画像のように縦長のレイアウトになるようにviewBoxを設定
   const linearViewBox = "0 0 280 650";
-  const circularViewBox = "60 20 220 420"; // 高さを1.5倍（380→420）、上部余白も調整
+  const circularViewBox = "40 20 240 350"; // 長方形レイアウト用に調整
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
