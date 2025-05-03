@@ -1,19 +1,23 @@
 import { RouteStation } from "@shared/schema";
 import { formatTime } from "@/lib/routeCalculator";
+import { findStation } from "@/lib/stations";
 
 interface StationTimelineProps {
   stations: RouteStation[];
 }
 
 const StationTimeline: React.FC<StationTimelineProps> = ({ stations }) => {
-  // Generate color based on station index and distance
-  const getGradientColor = (index: number, totalStations: number) => {
-    if (index === 0) return "from-green-300 to-green-500";
-    if (index === totalStations - 1) return "from-green-300 to-green-500";
+  // 大江戸線テーマカラー
+  const oedoLineColor = "#b6007a";
+  
+  // 距離に基づいて線の濃さを計算
+  const getLineOpacity = (stationName: string, nextStationName: string) => {
+    const station = findStation(stationName);
+    if (!station) return 0.7; // デフォルト
     
-    // Generate gradient colors based on position
-    const intensity = Math.min(Math.floor(index / totalStations * 5) + 3, 7);
-    return `from-green-${intensity - 1}00 to-green-${intensity}00`;
+    // 距離に基づいて濃淡を調整 (0.3-1.0の範囲)
+    const distance = station.nextDistance || 1.0;
+    return Math.min(0.3 + (distance - 0.7) * 0.4, 1.0);
   };
 
   // Get station marker type
@@ -31,7 +35,8 @@ const StationTimeline: React.FC<StationTimelineProps> = ({ stations }) => {
         {stations.map((station, index) => {
           const isLast = index === stations.length - 1;
           const marker = getMarkerType(station, index, isLast);
-          const gradientColor = getGradientColor(index, stations.length);
+          const nextStation = !isLast ? stations[index + 1] : null;
+          const lineOpacity = nextStation ? getLineOpacity(station.name, nextStation.name) : 1.0;
           
           return (
             <div className="flex" key={`${station.name}-${index}`}>
@@ -40,7 +45,13 @@ const StationTimeline: React.FC<StationTimelineProps> = ({ stations }) => {
                   {marker.label}
                 </div>
                 {!isLast && (
-                  <div className={`absolute top-6 bottom-0 left-3 w-0.5 bg-gradient-to-b ${gradientColor}`}></div>
+                  <div 
+                    className="absolute top-6 bottom-0 left-3 w-1.5" 
+                    style={{ 
+                      backgroundColor: oedoLineColor, 
+                      opacity: lineOpacity 
+                    }}
+                  ></div>
                 )}
               </div>
               <div className="ml-4">

@@ -110,6 +110,9 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
               <span className="bg-blue-500 text-white px-1 rounded ml-2">青</span>: 出発駅 / 
               <span className="bg-red-500 text-white px-1 rounded ml-2">赤</span>: 到着駅
             </p>
+            <p className="mt-1">
+              駅をクリックして選択・解除できます。同じ駅を2回クリックすると選択解除します。
+            </p>
           </div>
           
           <OedoMap

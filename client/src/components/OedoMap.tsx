@@ -280,7 +280,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
               if (i < circularStations.length - 1) {
                 const nextStation = circularStations[i + 1];
                 // Skip the last instance where it loops back
-                if (i === circularStations.length - 2) return null;
+                // 接続パス（新宿→都庁前）も描画する
+              //if (i === circularStations.length - 2) return null;
                 
                 // Calculate opacity based on distance (0.7-1.9 range -> 0.3-1.0 opacity) - 濃淡の差を強く
                 const distanceOpacity = Math.min(0.3 + (station.nextDistance - 0.7) * 0.4, 1.0);
