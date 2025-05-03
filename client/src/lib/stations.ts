@@ -33,48 +33,47 @@ export const linearStations: OedoStation[] = [
   { name: "都庁前", zone: "linear", nextDistance: 0.0, cx: 140, cy: 570, textAnchor: "start", textX: 160, textY: 570 }
 ];
 
-// 環状線ゾーン - 縦長楕円形に配置（添付画像を参考）
+// 環状線ゾーン - 縦長楕円形に配置（添付画像参考）- 駅間隔を均等に
 export const circularStations: OedoStation[] = [
-  // 上部
-  { name: "都庁前", zone: "circular", nextDistance: 0.67, cx: 160, cy: 70, textAnchor: "end", textX: 145, textY: 70 },
-  { name: "新宿", zone: "circular", nextDistance: 0.93, cx: 180, cy: 70, textAnchor: "start", textX: 195, textY: 70 },
-  { name: "新宿西口", zone: "circular", nextDistance: 1.73, cx: 200, cy: 80, textAnchor: "start", textX: 215, textY: 80 },
+  // 上部 - 楕円形の上部（新宿エリア）
+  { name: "都庁前", zone: "circular", nextDistance: 0.67, cx: 160, cy: 80, textAnchor: "end", textX: 140, textY: 80 },
   
-  // 右側縦線
-  { name: "代々木", zone: "circular", nextDistance: 1.33, cx: 210, cy: 110, textAnchor: "start", textX: 225, textY: 110 },
-  { name: "国立競技場", zone: "circular", nextDistance: 1.60, cx: 210, cy: 140, textAnchor: "start", textX: 225, textY: 140 },
-  { name: "青山一丁目", zone: "circular", nextDistance: 1.33, cx: 210, cy: 170, textAnchor: "start", textX: 225, textY: 170 },
-  { name: "六本木", zone: "circular", nextDistance: 1.73, cx: 210, cy: 200, textAnchor: "start", textX: 225, textY: 200 },
-  { name: "麻布十番", zone: "circular", nextDistance: 1.20, cx: 210, cy: 230, textAnchor: "start", textX: 225, textY: 230 },
-  { name: "赤羽橋", zone: "circular", nextDistance: 1.20, cx: 210, cy: 260, textAnchor: "start", textX: 225, textY: 260 },
-  { name: "大門", zone: "circular", nextDistance: 1.60, cx: 210, cy: 290, textAnchor: "start", textX: 225, textY: 290 },
-  { name: "汐留", zone: "circular", nextDistance: 1.07, cx: 210, cy: 320, textAnchor: "start", textX: 225, textY: 320 },
-  { name: "築地市場", zone: "circular", nextDistance: 0.93, cx: 210, cy: 350, textAnchor: "start", textX: 225, textY: 350 },
-  { name: "勝どき", zone: "circular", nextDistance: 1.47, cx: 210, cy: 380, textAnchor: "start", textX: 225, textY: 380 },
+  // 右側縦線 - 環状線の右側縦線（代々木→勝どき）- 15駅を均等配置
+  { name: "代々木", zone: "circular", nextDistance: 1.33, cx: 215, cy: 95, textAnchor: "start", textX: 235, textY: 95 },
+  { name: "国立競技場", zone: "circular", nextDistance: 1.60, cx: 215, cy: 110, textAnchor: "start", textX: 235, textY: 110 },
+  { name: "青山一丁目", zone: "circular", nextDistance: 1.33, cx: 215, cy: 125, textAnchor: "start", textX: 235, textY: 125 },
+  { name: "六本木", zone: "circular", nextDistance: 1.73, cx: 215, cy: 140, textAnchor: "start", textX: 235, textY: 140 },
+  { name: "麻布十番", zone: "circular", nextDistance: 1.20, cx: 215, cy: 155, textAnchor: "start", textX: 235, textY: 155 },
+  { name: "赤羽橋", zone: "circular", nextDistance: 1.20, cx: 215, cy: 170, textAnchor: "start", textX: 235, textY: 170 },
+  { name: "大門", zone: "circular", nextDistance: 1.60, cx: 215, cy: 185, textAnchor: "start", textX: 235, textY: 185 },
+  { name: "汐留", zone: "circular", nextDistance: 1.07, cx: 215, cy: 200, textAnchor: "start", textX: 235, textY: 200 },
+  { name: "築地市場", zone: "circular", nextDistance: 0.93, cx: 215, cy: 215, textAnchor: "start", textX: 235, textY: 215 },
+  { name: "勝どき", zone: "circular", nextDistance: 1.47, cx: 215, cy: 230, textAnchor: "start", textX: 235, textY: 230 },
+  { name: "月島", zone: "circular", nextDistance: 1.33, cx: 215, cy: 245, textAnchor: "start", textX: 235, textY: 245 },
+  { name: "門前仲町", zone: "circular", nextDistance: 1.60, cx: 215, cy: 260, textAnchor: "start", textX: 235, textY: 260 },
+  { name: "清澄白河", zone: "circular", nextDistance: 1.33, cx: 215, cy: 275, textAnchor: "start", textX: 235, textY: 275 },
+  { name: "森下", zone: "circular", nextDistance: 1.07, cx: 215, cy: 290, textAnchor: "start", textX: 235, textY: 290 },
+  { name: "両国", zone: "circular", nextDistance: 1.20, cx: 215, cy: 305, textAnchor: "start", textX: 235, textY: 305 },
   
-  // 下部
-  { name: "月島", zone: "circular", nextDistance: 1.33, cx: 160, cy: 410, textAnchor: "middle", textX: 160, textY: 425 },
+  // 左側縦線 - 環状線の左側縦線（蔵前→飯田橋）- 15駅を均等配置
+  { name: "蔵前", zone: "circular", nextDistance: 1.47, cx: 105, cy: 320, textAnchor: "end", textX: 85, textY: 320 },
+  { name: "新御徒町", zone: "circular", nextDistance: 1.20, cx: 105, cy: 305, textAnchor: "end", textX: 85, textY: 305 },
+  { name: "上野御徒町", zone: "circular", nextDistance: 0.80, cx: 105, cy: 290, textAnchor: "end", textX: 85, textY: 290 },
+  { name: "本郷三丁目", zone: "circular", nextDistance: 1.73, cx: 105, cy: 275, textAnchor: "end", textX: 85, textY: 275 },
+  { name: "春日", zone: "circular", nextDistance: 0.93, cx: 105, cy: 260, textAnchor: "end", textX: 85, textY: 260 },
+  { name: "飯田橋", zone: "circular", nextDistance: 1.07, cx: 105, cy: 245, textAnchor: "end", textX: 85, textY: 245 },
+  { name: "牛込神楽坂", zone: "circular", nextDistance: 1.20, cx: 105, cy: 230, textAnchor: "end", textX: 85, textY: 230 },
+  { name: "牛込柳町", zone: "circular", nextDistance: 1.07, cx: 105, cy: 215, textAnchor: "end", textX: 85, textY: 215 },
+  { name: "若松河田", zone: "circular", nextDistance: 1.47, cx: 105, cy: 200, textAnchor: "end", textX: 85, textY: 200 },
+  { name: "東新宿", zone: "circular", nextDistance: 1.33, cx: 105, cy: 185, textAnchor: "end", textX: 85, textY: 185 },
+  { name: "新宿西口", zone: "circular", nextDistance: 0.93, cx: 105, cy: 170, textAnchor: "end", textX: 85, textY: 170 },
+  { name: "新宿", zone: "circular", nextDistance: 0.67, cx: 105, cy: 155, textAnchor: "end", textX: 85, textY: 155 },
   
-  // 左側縦線
-  { name: "門前仲町", zone: "circular", nextDistance: 1.60, cx: 110, cy: 380, textAnchor: "end", textX: 95, textY: 380 },
-  { name: "清澄白河", zone: "circular", nextDistance: 1.33, cx: 110, cy: 350, textAnchor: "end", textX: 95, textY: 350 },
-  { name: "森下", zone: "circular", nextDistance: 1.07, cx: 110, cy: 320, textAnchor: "end", textX: 95, textY: 320 },
-  { name: "両国", zone: "circular", nextDistance: 1.20, cx: 110, cy: 290, textAnchor: "end", textX: 95, textY: 290 },
-  { name: "蔵前", zone: "circular", nextDistance: 1.47, cx: 110, cy: 260, textAnchor: "end", textX: 95, textY: 260 },
-  { name: "新御徒町", zone: "circular", nextDistance: 1.20, cx: 110, cy: 230, textAnchor: "end", textX: 95, textY: 230 },
-  { name: "上野御徒町", zone: "circular", nextDistance: 0.80, cx: 110, cy: 200, textAnchor: "end", textX: 95, textY: 200 },
-  { name: "本郷三丁目", zone: "circular", nextDistance: 1.73, cx: 110, cy: 170, textAnchor: "end", textX: 95, textY: 170 },
-  { name: "春日", zone: "circular", nextDistance: 0.93, cx: 110, cy: 140, textAnchor: "end", textX: 95, textY: 140 },
-  
-  // 左上部
-  { name: "飯田橋", zone: "circular", nextDistance: 1.87, cx: 120, cy: 110, textAnchor: "end", textX: 105, textY: 110 },
-  { name: "牛込神楽坂", zone: "circular", nextDistance: 1.07, cx: 130, cy: 95, textAnchor: "end", textX: 115, textY: 95 },
-  { name: "牛込柳町", zone: "circular", nextDistance: 1.20, cx: 135, cy: 90, textAnchor: "end", textX: 120, textY: 90 },
-  { name: "若松河田", zone: "circular", nextDistance: 1.07, cx: 140, cy: 85, textAnchor: "end", textX: 125, textY: 85 },
-  { name: "東新宿", zone: "circular", nextDistance: 1.33, cx: 145, cy: 80, textAnchor: "end", textX: 130, textY: 80 },
+  // 下部 - 楕円形の下部（月島）
+  { name: "月島", zone: "circular", nextDistance: 1.60, cx: 160, cy: 330, textAnchor: "middle", textX: 160, textY: 345 },
   
   // 都庁前に戻る (最後の都庁前は実際には表示しない)
-  { name: "都庁前", zone: "circular", nextDistance: 0.0, cx: 160, cy: 70, textAnchor: "end", textX: 145, textY: 70 }
+  { name: "都庁前", zone: "circular", nextDistance: 0.0, cx: 160, cy: 80, textAnchor: "end", textX: 140, textY: 80 }
 ];
 
 // All stations merged
