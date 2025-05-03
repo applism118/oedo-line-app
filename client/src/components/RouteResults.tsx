@@ -53,25 +53,6 @@ const RouteResults: React.FC<RouteResultsProps> = ({ routes, onSavePlan }) => {
 
         {walkingSpeeds.map(speed => (
           <TabsContent key={speed.id} value={speed.id}>
-            <div className="grid md:grid-cols-3 gap-4 mb-4">
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">歩行速度</p>
-                <p className="font-semibold">{speed.label}</p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">総距離</p>
-                <p className="font-semibold">
-                  {routes[speed.id as keyof typeof routes]?.totalDistance.toFixed(1)} km
-                </p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">予想所要時間</p>
-                <p className="font-semibold">
-                  {totalTimeHours.toFixed(1)} 時間
-                </p>
-              </div>
-            </div>
-            
             {routes[speed.id as keyof typeof routes] && (
               <StationTimeline 
                 stations={routes[speed.id as keyof typeof routes]!.stations} 

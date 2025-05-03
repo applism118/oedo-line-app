@@ -346,25 +346,9 @@ const OedoMap: React.FC<OedoMapProps> = ({
         </div>
       </div>
 
-      {/* Instructions */}
+      {/* Instructions for tab switching */}
       <div className="bg-gray-50 p-2 rounded-lg text-sm text-center">
-        <p>
-          <span className="inline-flex items-center">
-            <span className="bg-blue-500 h-3 w-3 inline-block rounded-full mr-1"></span>
-            出発駅
-          </span>
-          <span className="mx-2">|</span>
-          <span className="inline-flex items-center">
-            <span className="bg-red-500 h-3 w-3 inline-block rounded-full mr-1"></span>
-            到着駅
-          </span>
-          <span className="mx-2">|</span>
-          <span className="inline-flex items-center">
-            <span className="bg-purple-400 h-3 w-3 inline-block rounded-full mr-1"></span>
-            経由駅
-          </span>
-        </p>
-        <p className="text-xs text-gray-500 mt-1">タブをクリックして路線図を切り替えられます</p>
+        <p className="text-xs text-gray-500">タブをクリックして路線図を切り替えられます</p>
       </div>
     </div>
   );
