@@ -20,7 +20,7 @@ export const walkingSpeeds = [
 
 // Linear zone stations (from Hikarigaoka to Tocho-mae) - 添付画像のように縦方向に配置
 export const linearStations: OedoStation[] = [
-  { name: "光が丘", zone: "linear", nextDistance: 1.1, cx: 140, cy: 50, textAnchor: "start", textX: 160, textY: 50 },
+  { name: "光が丘", zone: "linear", nextDistance: 1.1, cx: 140, cy: 70, textAnchor: "start", textX: 160, textY: 70 },
   { name: "練馬春日町", zone: "linear", nextDistance: 0.9, cx: 140, cy: 100, textAnchor: "start", textX: 160, textY: 100 },
   { name: "豊島園", zone: "linear", nextDistance: 1.2, cx: 140, cy: 150, textAnchor: "start", textX: 160, textY: 150 },
   { name: "練馬", zone: "linear", nextDistance: 1.1, cx: 140, cy: 200, textAnchor: "start", textX: 160, textY: 200 },

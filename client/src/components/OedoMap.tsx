@@ -246,7 +246,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {/* Zone label */}
             <text 
               x="140" 
-              y="50" 
+              y="35" 
               className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
