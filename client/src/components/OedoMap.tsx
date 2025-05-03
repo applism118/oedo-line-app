@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
-import { linearStations, circularStations } from "@/lib/stations";
+import { useState, useEffect, useMemo } from "react";
+import { linearStations, circularStations, allStations, findStation } from "@/lib/stations";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "./ui/button";
+import { Direction } from "@shared/schema";
 
 interface OedoMapProps {
   selectedFromStation: string | null;
   selectedToStation: string | null;
+  direction: Direction;
   onStationClick: (stationName: string) => void;
 }
 
@@ -15,52 +17,188 @@ type MapView = "linear" | "circular";
 const OedoMap: React.FC<OedoMapProps> = ({ 
   selectedFromStation, 
   selectedToStation, 
+  direction,
   onStationClick 
 }) => {
   const [selectedRoute, setSelectedRoute] = useState<string[]>([]);
   const [activeView, setActiveView] = useState<MapView>("linear");
   const isMobile = useIsMobile();
 
+  // 選択された2駅間の経路を計算する関数
+  const calculateRouteBetweenStations = (from: string, to: string) => {
+    // 直線ゾーンの場合
+    const fromLinearIdx = linearStations.findIndex(s => s.name === from);
+    const toLinearIdx = linearStations.findIndex(s => s.name === to);
+    
+    // 環状線ゾーンの場合
+    const fromCircularIdx = circularStations.findIndex(s => s.name === from);
+    const toCircularIdx = circularStations.findIndex(s => s.name === to);
+    
+    // 直線ゾーン内での移動
+    if (fromLinearIdx !== -1 && toLinearIdx !== -1) {
+      const startIdx = Math.min(fromLinearIdx, toLinearIdx);
+      const endIdx = Math.max(fromLinearIdx, toLinearIdx);
+      return linearStations.slice(startIdx, endIdx + 1).map(s => s.name);
+    }
+    
+    // 環状線ゾーン内での移動
+    if (fromCircularIdx !== -1 && toCircularIdx !== -1) {
+      const stations = [];
+      // 時計回り
+      if (direction === "clockwise") {
+        if (fromCircularIdx <= toCircularIdx) {
+          // 順方向
+          for (let i = fromCircularIdx; i <= toCircularIdx; i++) {
+            stations.push(circularStations[i].name);
+          }
+        } else {
+          // 環状線を一周する
+          for (let i = fromCircularIdx; i < circularStations.length; i++) {
+            stations.push(circularStations[i].name);
+          }
+          for (let i = 0; i <= toCircularIdx; i++) {
+            stations.push(circularStations[i].name);
+          }
+        }
+      } else {
+        // 反時計回り
+        if (fromCircularIdx >= toCircularIdx) {
+          // 逆方向
+          for (let i = fromCircularIdx; i >= toCircularIdx; i--) {
+            stations.push(circularStations[i].name);
+          }
+        } else {
+          // 環状線を一周する
+          for (let i = fromCircularIdx; i >= 0; i--) {
+            stations.push(circularStations[i].name);
+          }
+          for (let i = circularStations.length - 1; i >= toCircularIdx; i--) {
+            stations.push(circularStations[i].name);
+          }
+        }
+      }
+      return stations;
+    }
+    
+    // 直線ゾーンから環状線ゾーンへの移動 (都庁前駅経由)
+    if (fromLinearIdx !== -1 && toCircularIdx !== -1) {
+      const linearPart = linearStations.slice(fromLinearIdx, linearStations.length).map(s => s.name);
+      const tochomaeIdx = circularStations.findIndex(s => s.name === "都庁前");
+      
+      const circularPart = [];
+      // 時計回り
+      if (direction === "clockwise") {
+        if (tochomaeIdx <= toCircularIdx) {
+          for (let i = tochomaeIdx; i <= toCircularIdx; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+        } else {
+          for (let i = tochomaeIdx; i < circularStations.length; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+          for (let i = 0; i <= toCircularIdx; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+        }
+      } else {
+        // 反時計回り
+        if (tochomaeIdx >= toCircularIdx) {
+          for (let i = tochomaeIdx; i >= toCircularIdx; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+        } else {
+          for (let i = tochomaeIdx; i >= 0; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+          for (let i = circularStations.length - 1; i >= toCircularIdx; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+        }
+      }
+      
+      // 重複を除外 (都庁前駅が両方に含まれる)
+      return [...linearPart, ...circularPart.slice(1)];
+    }
+    
+    // 環状線ゾーンから直線ゾーンへの移動 (都庁前駅経由)
+    if (fromCircularIdx !== -1 && toLinearIdx !== -1) {
+      const tochomaeIdx = circularStations.findIndex(s => s.name === "都庁前");
+      
+      const circularPart = [];
+      // 時計回り
+      if (direction === "clockwise") {
+        if (fromCircularIdx <= tochomaeIdx) {
+          for (let i = fromCircularIdx; i <= tochomaeIdx; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+        } else {
+          for (let i = fromCircularIdx; i < circularStations.length; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+          for (let i = 0; i <= tochomaeIdx; i++) {
+            circularPart.push(circularStations[i].name);
+          }
+        }
+      } else {
+        // 反時計回り
+        if (fromCircularIdx >= tochomaeIdx) {
+          for (let i = fromCircularIdx; i >= tochomaeIdx; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+        } else {
+          for (let i = fromCircularIdx; i >= 0; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+          for (let i = circularStations.length - 1; i >= tochomaeIdx; i--) {
+            circularPart.push(circularStations[i].name);
+          }
+        }
+      }
+      
+      const linearIdx = linearStations.findIndex(s => s.name === "都庁前");
+      const linearPart = linearStations.slice(linearIdx, toLinearIdx + 1).map(s => s.name);
+      
+      return [...circularPart, ...linearPart.slice(1)];
+    }
+    
+    return [from, to];
+  };
+
   // Calculate the selected route when departure and destination are both selected
   useEffect(() => {
     if (selectedFromStation && selectedToStation) {
-      // This is a simplified version - in a real app, we'd calculate the actual route
-      // between the stations based on the direction
+      // 選択された2駅間の経路を計算
+      const routeStations = calculateRouteBetweenStations(selectedFromStation, selectedToStation);
+      setSelectedRoute(routeStations);
+
+      // 自動的に適切なビューに切り替える
       const fromLinearIdx = linearStations.findIndex(s => s.name === selectedFromStation);
       const fromCircularIdx = circularStations.findIndex(s => s.name === selectedFromStation);
       const toLinearIdx = linearStations.findIndex(s => s.name === selectedToStation);
       const toCircularIdx = circularStations.findIndex(s => s.name === selectedToStation);
       
-      const stations: string[] = [];
-      
-      // Just for highlighting purposes - this doesn't calculate the full path
-      if (selectedFromStation) stations.push(selectedFromStation);
-      if (selectedToStation) stations.push(selectedToStation);
-      
-      setSelectedRoute(stations);
-
-      // Auto switch to the appropriate view based on selected stations
       if (fromLinearIdx !== -1 && toLinearIdx !== -1) {
         setActiveView("linear");
       } else if (fromCircularIdx !== -1 && toCircularIdx !== -1) {
         setActiveView("circular");
       } else if (fromLinearIdx !== -1 && toCircularIdx !== -1) {
-        // If from linear to circular, show linear first
+        // 直線→環状線は、直線ビューを表示
         setActiveView("linear");
       } else if (fromCircularIdx !== -1 && toLinearIdx !== -1) {
-        // If from circular to linear, show circular first
+        // 環状線→直線は、環状線ビューを表示
         setActiveView("circular");
       }
     } else {
       setSelectedRoute([]);
     }
-  }, [selectedFromStation, selectedToStation]);
+  }, [selectedFromStation, selectedToStation, direction]);
 
-  // SVG dimensions and viewBox
+  // SVG dimensions and viewBox for responsive display
   const svgWidth = 1150;
   const svgHeight = 650;
-  const linearViewBox = "20 20 350 350";
-  const circularViewBox = "0 0 1150 650"; // 新しい環状線に合わせたviewBox
+  // モバイル用のviewBoxはより狭い範囲を表示
+  const linearViewBox = isMobile ? "20 20 300 300" : "20 20 350 350";
+  const circularViewBox = isMobile ? "0 0 800 500" : "0 0 1150 650"; // モバイル用に縮小
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
@@ -97,8 +235,14 @@ const OedoMap: React.FC<OedoMapProps> = ({
 
       {/* Map View Container */}
       <div className="overflow-x-auto">
-        <div className={`line-map relative ${isMobile ? 'min-w-[1150px]' : ''} max-w-full mx-auto`}>
-          <svg width="100%" height={svgHeight} viewBox={viewBox} className="mx-auto">
+        <div className={`line-map relative max-w-full mx-auto`}>
+          <svg 
+            width="100%" 
+            height={isMobile ? svgHeight * 0.8 : svgHeight} 
+            viewBox={viewBox} 
+            className="mx-auto"
+            preserveAspectRatio="xMidYMid meet"
+          >
             {/* Zone label */}
             <text 
               x={activeView === "linear" ? "240" : "570"} 
@@ -141,7 +285,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   r={station.name === "都庁前" ? 8 : 6} 
                   className={`
                     ${station.name === selectedFromStation ? 'fill-blue-500' : 
-                      station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
+                      station.name === selectedToStation ? 'fill-red-500' : 
+                      selectedRoute.includes(station.name) ? 'fill-purple-400' : 'fill-white'} 
                     cursor-pointer
                   `}
                   stroke={oedoLineColor}
@@ -178,7 +323,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
                     r={station.name === "都庁前" ? 8 : 6} 
                     className={`
                       ${station.name === selectedFromStation ? 'fill-blue-500' : 
-                        station.name === selectedToStation ? 'fill-red-500' : 'fill-white'} 
+                        station.name === selectedToStation ? 'fill-red-500' : 
+                        selectedRoute.includes(station.name) ? 'fill-purple-400' : 'fill-white'} 
                       cursor-pointer
                     `}
                     stroke={oedoLineColor}
@@ -211,6 +357,11 @@ const OedoMap: React.FC<OedoMapProps> = ({
           <span className="inline-flex items-center">
             <span className="bg-red-500 h-3 w-3 inline-block rounded-full mr-1"></span>
             到着駅
+          </span>
+          <span className="mx-2">|</span>
+          <span className="inline-flex items-center">
+            <span className="bg-purple-400 h-3 w-3 inline-block rounded-full mr-1"></span>
+            経由駅
           </span>
         </p>
         <p className="text-xs text-gray-500 mt-1">タブをクリックして路線図を切り替えられます</p>

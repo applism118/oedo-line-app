@@ -115,6 +115,7 @@ const RouteSelector: React.FC<RouteSelectorProps> = ({
           <OedoMap
             selectedFromStation={fromStation}
             selectedToStation={toStation}
+            direction={direction}
             onStationClick={handleStationClick}
           />
         </TabsContent>
