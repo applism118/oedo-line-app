@@ -254,27 +254,50 @@ const OedoMap: React.FC<OedoMapProps> = ({
               {activeView === "linear" ? "直線ゾーン (光が丘 → 都庁前)" : "環状線ゾーン"}
             </text>
             
-            {/* Linear Path - Only show in linear view */}
-            {activeView === "linear" && (
-              <path
-                d={linearStations.map((station, i) => 
-                  i === 0 ? `M ${station.cx} ${station.cy}` : `L ${station.cx} ${station.cy}`
-                ).join(' ')}
-                stroke={oedoLineColor}
-                strokeWidth="5"
-                fill="none"
-              />
-            )}
+            {/* Linear Path - Only show in linear view with varying opacity based on distance */}
+            {activeView === "linear" && linearStations.map((station, i) => {
+              if (i < linearStations.length - 1) {
+                const nextStation = linearStations[i + 1];
+                // Calculate opacity based on distance (1.0-2.0 range -> 0.6-1.0 opacity)
+                const distanceOpacity = Math.min(0.6 + (station.nextDistance - 1.0) * 0.2, 1.0);
+                
+                return (
+                  <path
+                    key={`path-${station.name}-${nextStation.name}`}
+                    d={`M ${station.cx} ${station.cy} L ${nextStation.cx} ${nextStation.cy}`}
+                    stroke={oedoLineColor}
+                    strokeWidth="5"
+                    strokeOpacity={distanceOpacity}
+                    fill="none"
+                  />
+                );
+              }
+              return null;
+            })}
             
-            {/* Rectangular Path for Circular zone - 縦長長方形に変更 */}
-            {activeView === "circular" && (
-              <path
-                d="M 80 80 L 140 80 L 200 120 L 200 480 L 160 520 L 120 480 L 120 120 L 80 80 Z"
-                stroke={oedoLineColor}
-                strokeWidth="5"
-                fill="none"
-              />
-            )}
+            {/* Circular Path with varying opacity based on distance */}
+            {activeView === "circular" && circularStations.map((station, i) => {
+              if (i < circularStations.length - 1) {
+                const nextStation = circularStations[i + 1];
+                // Skip the last instance where it loops back
+                if (i === circularStations.length - 2) return null;
+                
+                // Calculate opacity based on distance (0.8-1.8 range -> 0.5-1.0 opacity)
+                const distanceOpacity = Math.min(0.5 + (station.nextDistance - 0.8) * 0.3, 1.0);
+                
+                return (
+                  <path
+                    key={`path-${station.name}-${nextStation.name}`}
+                    d={`M ${station.cx} ${station.cy} L ${nextStation.cx} ${nextStation.cy}`}
+                    stroke={oedoLineColor}
+                    strokeWidth="5"
+                    strokeOpacity={distanceOpacity}
+                    fill="none"
+                  />
+                );
+              }
+              return null;
+            })}
             
             {/* Linear Stations - Only show when in linear view */}
             {activeView === "linear" && linearStations.map((station, index) => (
@@ -346,10 +369,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
         </div>
       </div>
 
-      {/* Instructions for tab switching */}
-      <div className="bg-gray-50 p-2 rounded-lg text-sm text-center">
-        <p className="text-xs text-gray-500">タブをクリックして路線図を切り替えられます</p>
-      </div>
+
     </div>
   );
 };
