@@ -258,15 +258,15 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {activeView === "linear" && linearStations.map((station, i) => {
               if (i < linearStations.length - 1) {
                 const nextStation = linearStations[i + 1];
-                // Calculate opacity based on distance (1.0-2.0 range -> 0.6-1.0 opacity)
-                const distanceOpacity = Math.min(0.6 + (station.nextDistance - 1.0) * 0.2, 1.0);
+                // Calculate opacity based on distance (1.0-2.0 range -> 0.3-1.0 opacity) - 濃淡の差を強く
+                const distanceOpacity = Math.min(0.3 + (station.nextDistance - 1.0) * 0.4, 1.0);
                 
                 return (
                   <path
                     key={`path-${station.name}-${nextStation.name}`}
                     d={`M ${station.cx} ${station.cy} L ${nextStation.cx} ${nextStation.cy}`}
                     stroke={oedoLineColor}
-                    strokeWidth="5"
+                    strokeWidth="8"
                     strokeOpacity={distanceOpacity}
                     fill="none"
                   />
@@ -282,15 +282,15 @@ const OedoMap: React.FC<OedoMapProps> = ({
                 // Skip the last instance where it loops back
                 if (i === circularStations.length - 2) return null;
                 
-                // Calculate opacity based on distance (0.8-1.8 range -> 0.5-1.0 opacity)
-                const distanceOpacity = Math.min(0.5 + (station.nextDistance - 0.8) * 0.3, 1.0);
+                // Calculate opacity based on distance (0.7-1.9 range -> 0.3-1.0 opacity) - 濃淡の差を強く
+                const distanceOpacity = Math.min(0.3 + (station.nextDistance - 0.7) * 0.4, 1.0);
                 
                 return (
                   <path
                     key={`path-${station.name}-${nextStation.name}`}
                     d={`M ${station.cx} ${station.cy} L ${nextStation.cx} ${nextStation.cy}`}
                     stroke={oedoLineColor}
-                    strokeWidth="5"
+                    strokeWidth="8"
                     strokeOpacity={distanceOpacity}
                     fill="none"
                   />
