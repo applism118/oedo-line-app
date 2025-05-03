@@ -246,7 +246,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
             {/* Zone label */}
             <text 
               x="140" 
-              y="35" 
+              y="50" 
               className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
@@ -261,7 +261,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   i === 0 ? `M ${station.cx} ${station.cy}` : `L ${station.cx} ${station.cy}`
                 ).join(' ')}
                 stroke={oedoLineColor}
-                strokeWidth="4"
+                strokeWidth="5"
                 fill="none"
               />
             )}
@@ -271,7 +271,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
               <path
                 d="M 80 80 L 140 80 L 200 120 L 200 480 L 160 520 L 120 480 L 120 120 L 80 80 Z"
                 stroke={oedoLineColor}
-                strokeWidth="4"
+                strokeWidth="5"
                 fill="none"
               />
             )}
@@ -282,7 +282,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                 <circle 
                   cx={station.cx} 
                   cy={station.cy} 
-                  r={station.name === "都庁前" ? 8 : 6} 
+                  r={station.name === "都庁前" ? 10 : 8} 
                   className={`
                     ${station.name === selectedFromStation ? 'fill-blue-500' : 
                       station.name === selectedToStation ? 'fill-red-500' : 
@@ -296,7 +296,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   x={station.textX} 
                   y={station.textY} 
                   className={`
-                    text-base md:text-lg
+                    text-lg md:text-xl
                     ${station.name === "都庁前" ? 'font-semibold' : 'font-medium'} 
                     cursor-pointer
                   `} 
@@ -320,7 +320,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   <circle 
                     cx={station.cx} 
                     cy={station.cy} 
-                    r={station.name === "都庁前" ? 8 : 6} 
+                    r={station.name === "都庁前" ? 10 : 8} 
                     className={`
                       ${station.name === selectedFromStation ? 'fill-blue-500' : 
                         station.name === selectedToStation ? 'fill-red-500' : 
@@ -333,7 +333,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   <text 
                     x={station.textX} 
                     y={station.textY} 
-                    className="text-base md:text-lg font-medium cursor-pointer" 
+                    className="text-lg md:text-xl font-medium cursor-pointer" 
                     textAnchor={station.textAnchor}
                     // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
                   >
