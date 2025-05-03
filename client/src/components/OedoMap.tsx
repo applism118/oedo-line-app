@@ -245,8 +245,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
           >
             {/* Zone label */}
             <text 
-              x={activeView === "linear" ? "140" : "160"} 
-              y={activeView === "linear" ? "35" : "35"} 
+              x={activeView === "linear" ? "140" : "150"} 
+              y={activeView === "linear" ? "35" : "50"} 
               className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
