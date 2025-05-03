@@ -195,10 +195,10 @@ const OedoMap: React.FC<OedoMapProps> = ({
 
   // SVG dimensions and viewBox for responsive display
   const svgWidth = 300;
-  const svgHeight = 550;
+  const svgHeight = 580;
   // 添付画像のように縦長のレイアウトになるようにviewBoxを設定
-  const linearViewBox = "20 20 250 550";
-  const circularViewBox = "30 30 220 550";
+  const linearViewBox = "60 0 160 580";
+  const circularViewBox = "30 0 220 580";
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
@@ -212,12 +212,12 @@ const OedoMap: React.FC<OedoMapProps> = ({
   return (
     <div className="space-y-4">
       {/* View Toggle Buttons */}
-      <div className="flex justify-center space-x-2 mb-2">
+      <div className="flex justify-center space-x-2 mb-2 w-full px-2">
         <Button 
           variant={activeView === "linear" ? "default" : "outline"}
           onClick={() => setActiveView("linear")}
-          className="px-4 py-2 rounded-full"
-          style={{ backgroundColor: activeView === "linear" ? oedoLineColor : 'white', color: activeView === "linear" ? 'white' : oedoLineColor, borderColor: oedoLineColor }}
+          className="px-2 py-2 rounded-full text-base whitespace-nowrap"
+          style={{ backgroundColor: activeView === "linear" ? oedoLineColor : 'white', color: activeView === "linear" ? 'white' : oedoLineColor, borderColor: oedoLineColor, minWidth: '45%' }}
         >
           <ChevronLeft className="mr-1 h-4 w-4" />
           直線ゾーン
@@ -225,8 +225,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
         <Button 
           variant={activeView === "circular" ? "default" : "outline"}
           onClick={() => setActiveView("circular")}
-          className="px-4 py-2 rounded-full"
-          style={{ backgroundColor: activeView === "circular" ? oedoLineColor : 'white', color: activeView === "circular" ? 'white' : oedoLineColor, borderColor: oedoLineColor }}
+          className="px-2 py-2 rounded-full text-base whitespace-nowrap"
+          style={{ backgroundColor: activeView === "circular" ? oedoLineColor : 'white', color: activeView === "circular" ? 'white' : oedoLineColor, borderColor: oedoLineColor, minWidth: '45%' }}
         >
           環状線ゾーン
           <ChevronRight className="ml-1 h-4 w-4" />
@@ -245,9 +245,9 @@ const OedoMap: React.FC<OedoMapProps> = ({
           >
             {/* Zone label */}
             <text 
-              x={activeView === "linear" ? "140" : "140"} 
-              y="30" 
-              className="text-lg font-bold" 
+              x="140" 
+              y="35" 
+              className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
             >
@@ -296,7 +296,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   x={station.textX} 
                   y={station.textY} 
                   className={`
-                    text-sm md:text-base
+                    text-base md:text-lg
                     ${station.name === "都庁前" ? 'font-semibold' : 'font-medium'} 
                     cursor-pointer
                   `} 
@@ -333,7 +333,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
                   <text 
                     x={station.textX} 
                     y={station.textY} 
-                    className="text-sm md:text-base font-medium cursor-pointer" 
+                    className="text-base md:text-lg font-medium cursor-pointer" 
                     textAnchor={station.textAnchor}
                     // 駅名の傾きや位置移動は使わず、textAnchorとtextXYで位置調整
                   >
