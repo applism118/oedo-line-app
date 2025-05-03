@@ -194,11 +194,11 @@ const OedoMap: React.FC<OedoMapProps> = ({
   }, [selectedFromStation, selectedToStation, direction]);
 
   // SVG dimensions and viewBox for responsive display
-  const svgWidth = 300;
-  const svgHeight = 650;
+  const svgWidth = 320;
+  const svgHeight = 450;
   // 添付画像のように縦長のレイアウトになるようにviewBoxを設定
   const linearViewBox = "0 0 280 650";
-  const circularViewBox = "0 0 280 650";
+  const circularViewBox = "60 50 220 380";
   const viewBox = activeView === "linear" ? linearViewBox : circularViewBox;
 
   // Theme color for Oedo Line
@@ -245,8 +245,8 @@ const OedoMap: React.FC<OedoMapProps> = ({
           >
             {/* Zone label */}
             <text 
-              x="140" 
-              y="35" 
+              x={activeView === "linear" ? "140" : "160"} 
+              y={activeView === "linear" ? "35" : "35"} 
               className="text-xl font-bold" 
               textAnchor="middle" 
               fill={oedoLineColor}
@@ -275,7 +275,7 @@ const OedoMap: React.FC<OedoMapProps> = ({
               return null;
             })}
             
-            {/* Circular Path with varying opacity based on distance */}
+            {/* Circular Path with varying opacity based on distance - 縦長楕円形 */}
             {activeView === "circular" && circularStations.map((station, i) => {
               if (i < circularStations.length - 1) {
                 const nextStation = circularStations[i + 1];
